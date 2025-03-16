@@ -32,4 +32,19 @@ All modern AVs will detected this immediatly. For a couple of reasons:
 make classic
 ```
 
+### Classic with AES
+
+The loader is a small step further. Instead of baking the msfvenom payload directly
+into the binary, it is encrypted with AES beforehand and decrypted at runtime.
+In addition, the memory region is first made RW only and then excutable.
+It is still recognized by practically all modern AVs, but outdated or very very
+bad ones can probably already be bypassed.
+
+The following things are still very suspicious:
+* Entropy
+* RW memory that is made excutable directly afterwards
+* Known payload is in memory at runtime
+* well-known injection method
+
+
 
