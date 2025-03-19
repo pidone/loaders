@@ -29,7 +29,7 @@ All modern AVs will detected this immediatly. For a couple of reasons:
 * and so much more
 
 ```sh
-make classic
+make classic.exe
 ```
 
 ### Classic with AES
@@ -41,10 +41,40 @@ It is still recognized by practically all modern AVs, but outdated or very very
 bad ones can probably already be bypassed.
 
 The following things are still very suspicious:
-* Entropy
+* Entropy (the payload in the binary is at leased base64 decoded, which lowers the entropy)
 * RW memory that is made excutable directly afterwards
 * Known payload is in memory at runtime
 * well-known injection method
 
+```sh
+make classic_aes.exe
+```
 
+### Process Injection
 
+This loader uses an AES encrypted Payload and injects the decrypted payload in the give process (default: "explorer"),
+creates a new thread for this process which points to the decrypted payload and run it.
+This is still a well known method and get detected by nearly all AVs after 2022.
+
+Suspicious Stuff:
+* Entropy (the payload in the binary is at leased base64 decoded, which lowers the entropy)
+* RW memory that is made excutable directly afterwards
+* Known payload is in memory at runtime
+* well-known injection method
+
+Good Stuff:
+* Word or some other process will no longer run strange commands
+* The executated command and exit and the payload will keep alive
+
+```sh
+make process_inject.exe
+```
+
+### Jscript
+
+This uses the process injection technique embedded in Jscript. It has a serialized dotnet assemble with JScript can
+communicated via COM.
+
+```sh
+make dotnet.js
+```
