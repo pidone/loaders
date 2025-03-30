@@ -76,5 +76,12 @@ This uses the process injection technique embedded in Jscript. It has a serializ
 communicated via COM.
 
 ```sh
-make dotnet.js
+make loader.js
+```
+### HTA
+
+This uses the jscript loader and embedded it into an HTA file.
+
+```sh
+make loader.hta
 ```
